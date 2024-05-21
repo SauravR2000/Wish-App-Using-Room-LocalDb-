@@ -1,6 +1,7 @@
 package com.example.wishlistapp
 
 import WishRepository
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,9 +12,10 @@ import com.example.wishlistapp.Data.Wish
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WishViewModel(
-    private val wishRepository: WishRepository
+    private val wishRepository: WishRepository = Graph.wishRepository
 ) : ViewModel() {
     var wishTitleState by mutableStateOf("")
     var wishDescriptionState by mutableStateOf("")
@@ -41,6 +43,7 @@ class WishViewModel(
     }
 
     fun getWishById(id: Long): Flow<Wish> {
+        Log.i("TAG", "getWishById: saurav ${wishRepository.getWishById(id)}")
         return wishRepository.getWishById(id)
     }
 
@@ -51,6 +54,10 @@ class WishViewModel(
     }
 
     fun deleteWish(wish: Wish) {
-
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                wishRepository.deleteWish(wish)
+            }
+        }
     }
 }

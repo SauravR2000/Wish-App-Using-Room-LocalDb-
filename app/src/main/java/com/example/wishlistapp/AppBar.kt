@@ -45,6 +45,7 @@ fun AppBarView(
             .heightIn(max = 50.dp),
         elevation = 3.dp,
         backgroundColor = colorResource(id = R.color.app_bar_color),
-        navigationIcon = navigationIcon
-    )
+        navigationIcon = navigationIcon,
+
+        )
 }
